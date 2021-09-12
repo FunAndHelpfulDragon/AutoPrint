@@ -74,6 +74,8 @@ class main:
             self.Activeprint = True
             self.AutoPrint()
             print("----------------------------END---------------------------")
+        elif choice == 7:  # move Files
+            self.GApi.MoveFiles()
         else:
             print("Please enter a valid number")
 

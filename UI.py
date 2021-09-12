@@ -52,8 +52,14 @@ class pygameUI:
                 if 0 <= self.mouse[0] <= 120 and 215 <= self.mouse[1] <= 250:
                     self.Program.Input(6)
 
+                # Move Files
+                if 0 <= self.mouse[0] <= 120 and 240 <= self.mouse[1] <= 275:
+                    self.Program.Input(7)
+
             if ev.type == pygame.QUIT:
-                sys.exit("Program Quit")
+                pygame.quit()
+                StartUp()  # make sure that the program can still be used
+                # sys.exit("Program Quit")
 
     def DrawButtons(self):
         # Quit Button
@@ -94,6 +100,12 @@ class pygameUI:
         self.screen.blit(self.smallfont.render('Runs the program at a certain time', True, self.colourLight), (120, 215))  # noqa
         self.screen.blit(self.smallfont.render('and prints the file', True, self.colourLight), (120, 225))  # noqa
 
+        # Move Files
+        pygame.draw.rect(self.screen, (0, 0, 0), [0, 245, 120, 30])
+        self.screen.blit(self.smallfont.render('Moves Files', True, self.colourLight), (20, 250))  # noqa
+        self.screen.blit(self.smallfont.render('Moves files on google drive', True, self.colourLight), (120, 250))  # noqa
+        self.screen.blit(self.smallfont.render('(shold be automatic)', True, self.colourLight), (120, 260))  # noqa
+
     def DrawObjectsToDisplay(self):
         pygame.display.update()
 
@@ -113,26 +125,32 @@ class pygameUI:
 # TODO: add more settings for ui
 ui = pygameUI([(0, 0, 0), (255, 255, 255), (50, 50, 50)])
 
-Choice = None
-while Choice is None:
-    Choice = input("Do you want to use text based iterface (1) or UI based interface (with a bit of text based) (2)?: ")  # noqa
-    if not Choice.isdigit():
-        print("A number is required")
-        Choice = None
-    else:
-        Choice = int(Choice)
-        if 0 > Choice > 3:  # Choice is not 1 or 2
-            print("Only 1 or 2 is allowed")
-            Choice = None
 
-if Choice == 2:
-    ui.Main()
-elif Choice == 1:
-    while True:
-        choice = input("What do you want to do? (0 = exit, 1 = change settings, 2 = print, 3 = List (list files in that directory), 4 = Cleanup (clean up files that did not get deleted), 5 = GenFile (makes the file, doesn't print it), 6 = Automate (runs the program at XX:XX:XX time per day, also prints the file)): ")  # noqa
-        if choice.isdigit():
-            ui.Program.Input(int(choice))
+def StartUp():
+    Choice = None
+    while Choice is None:
+        Choice = input("Do you want to use text based iterface (1) or UI based interface (with a bit of text based) (2)?: ")  # noqa
+        if not Choice.isdigit():
+            print("A number is required")
+            Choice = None
         else:
-            print("Please enter a number")
-else:
-    print("WARNING: Invalid choice")
+            Choice = int(Choice)
+            if 0 > Choice > 3:  # Choice is not 1 or 2
+                print("Only 1 or 2 is allowed")
+                Choice = None
+
+    if Choice == 2:
+        ui.Main()
+    elif Choice == 1:
+        pygame.quit()
+        while True:
+            choice = input("What do you want to do? (0 = exit, 1 = change settings, 2 = print, 3 = List (list files in that directory), 4 = Cleanup (clean up files that did not get deleted), 5 = GenFile (makes the file, doesn't print it), 6 = Automate (runs the program at XX:XX:XX time per day, also prints the file), 7 = Move files (on google drive)): ")  # noqa
+            if choice.isdigit():
+                ui.Program.Input(int(choice))
+            else:
+                print("Please enter a number")
+    else:
+        print("WARNING: Invalid choice")
+
+
+StartUp()

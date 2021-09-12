@@ -1,3 +1,6 @@
+# REQUIREMENTS
+- python 3
+
 # Installation
 
 1. Clone / Download this repostratry

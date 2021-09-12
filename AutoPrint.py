@@ -103,6 +103,7 @@ class GoogleApi:
 
     def MoveFiles(self):
         print("Moving Files")
+        self.GetFilesForDownload()  # make sure it has files
         for file in self.Files:
             file_Id = file.get('id')
             currentfile = self.service.files().get(fileId=file_Id,
