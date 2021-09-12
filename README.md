@@ -9,6 +9,7 @@ RECOMMENDATION: do this in a virtual enviroment, https://docs.python.org/3/tutor
     `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib`
     `pip install pillow`
     `pip install PyPDF2`
+    `pip install pygame`
 4. Download `Test1.png` and run `lp Test1.png` (Test1.png is a blank image (transparent), so it shouldn't waste any ink)
    - This program uses CUPS to print out the file, by doing this you are checking that you can print out a file
    - If this doesn't work install CUPS: http://www.cups.org/ (it might be different depending on the os)
@@ -23,4 +24,4 @@ RECOMMENDATION: do this in a virtual enviroment, https://docs.python.org/3/tutor
 7. Everything is setup, use the Text based interface to print files.
 
 # To run
-run `python Main.py` in the virtual enviroment (if set up) or just normally
+run `python UI.py` in the virtual enviroment (if set up) or just normally

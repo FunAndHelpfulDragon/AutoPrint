@@ -1,13 +1,13 @@
 import AutoPrint as Ap
 import sys
 import time
+import datetime
+import os
 
 
 class main:
 
-    def __init__(self, Aprint):
-        self.Activeprint = Aprint
-
+    def __init__(self):
         # check for settings
         try:
             with open("APSettings.txt", 'r') as settings:
@@ -39,6 +39,7 @@ class main:
             self.__init__()
 
     def MakeSetting(self):
+        print("-------------------------SETTINGS-----------------------")
         with open("APSettings.txt", 'w') as settings:
             Download = input("Google drive folder id for download files (please make sure you have access to this): ")  # noqa
             Move = input("Google drive folder id for files to move to after printing (please make sure you have access to this): ")  # noqa
@@ -48,43 +49,66 @@ class main:
                            f" Move: {Move}\n" +
                            f" Printer: {printer}\n" +
                            f" Clean: {Clean}\n")
+        print("----------------------------END---------------------------")
 
-    def Input(self, input):
-        if input == 1:
-            self.MakeSetting()
-        elif input == 0:
+    def Input(self, choice):
+        if choice == 0:  # quit
             self.Activeprint = False
             sys.exit("Program finished")
-        elif input == 2:
+        elif choice == 1:  # settings
+            self.MakeSetting()
+        elif choice == 2:  # print
             self.GenFile = False
             self.PrintFiles()
-        elif input == 3:
+        elif choice == 3:  # list
             self.GApi.List()
-        elif input == 4:
+        elif choice == 4:  # clean up
             self.CApi.CleanUp()
-        elif input == 5:
+        elif choice == 5:  # download no print
             self.GenFile = True
             self.PrintFiles()
+        elif choice == 6:  # automate
+            print("----------------------------TIMER--------------------------")  # noqa
+            Time = input("Please enter a time (FORMAT: (HH:MM:SS), (24h time required)): ")
+            self.Autotime = datetime.datetime.strptime(Time, "%H:%M:%S").time()
+            self.Activeprint = True
+            self.AutoPrint()
+            print("----------------------------END---------------------------")
         else:
             print("Please enter a valid number")
 
     def PrintFiles(self):
-        self.GApi.DownloadFiles()
-        self.CApi.GenerateFile()
-        time.sleep(1)
-        if not self.GenFile:
-            self.CApi.PrintFiles(self.Print, "yourfile.pdf")
-            time.sleep(60)  # wait for print
-            if self.Clean.lower().replace(" ", "") == "y":
-                self.CApi.CleanUp()
-                self.GApi.MoveFiles()
+        if not os.path.exists("yourfile.pdf"):
+            self.GApi.DownloadFiles()
+            self.CApi.GenerateFile()
+            time.sleep(1)
+            if not self.GenFile:
+                self.ActualyPrintFile()
+        else:
+            print("File already exists")
+
+            if not self.GenFile:
+                print("Printing file")
+                self.ActualyPrintFile()
+            else:
+                print(f"Location to file: {os.path.dirname(__file__)}/yourfile.pdf")  # noqa
+
+    def ActualyPrintFile(self):
+        self.CApi.PrintFiles(self.Print, "yourfile.pdf")
+        time.sleep(60)  # wait for print
+        if self.Clean.lower().replace(" ", "") == "y":
+            self.CApi.CleanUp()
+            self.GApi.MoveFiles()
+
+    def AutoPrint(self):
+        try:
+            while self.Activeprint:  # Stop without using ctrl + c
+                if datetime.datetime.now().time() == self.Autotime:
+                    print("Attempting to print file")
+                    self.Input(5)
+        except KeyboardInterrupt:
+            print("Press 1 to quit")
+        return
 
 
-m = main(True)
-
-while m.Activeprint:
-    choice = input("What do you want to do? (0 = exit, 1 = change settings, 2 = print, 3 = List (list files in that directory), 4 = Cleanup (clean up files that did not get deleted), 5 = GenFile (makes the file, doesn't print it)): ")  # noqa
-    if choice.isdigit():
-        m.Input(int(choice))
-    else:
-        print("Please enter a number")
+m = main()

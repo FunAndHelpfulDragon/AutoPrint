@@ -80,7 +80,7 @@ class GoogleApi:
 
     def DownloadFiles(self):
         self.GetFilesForDownload()
-        print("Starting to download files...")
+        print("-------------------Downloading Files----------------------")
         self.newFiles = []
         for file in self.Files:
             file_Id = file.get('id')
@@ -99,6 +99,7 @@ class GoogleApi:
             with open(f"{self.Path}{file.get('name')}", 'wb') as f:
                 f.write(html)
                 self.newFiles.append(f)
+        print("----------------------------END---------------------------")
 
     def MoveFiles(self):
         print("Moving Files")
@@ -114,9 +115,11 @@ class GoogleApi:
             print(f"Moved file: {file.get('name')} to {self.moveFolder_Id}")
 
     def List(self):
+        print("----------------------Files in Drive----------------------")
         self.GetFilesForDownload()
         for file in self.Files:
             print(f"{file.get('name')} ({file.get('id')})")
+        print("----------------------------END---------------------------")
 
 # ComputerApi class
 #
@@ -172,6 +175,7 @@ class ComputerApi:
             os.system(f"lp {file_to_print}")
 
     def GenerateFile(self):
+        print("-----------------------Generating File--------------------")
         self.GetFiles()
         i = 0
         length = len(self.files)
@@ -200,11 +204,15 @@ class ComputerApi:
                 if pdfFile != ".DS_Store":
                     mergedObj.append(PdfFileReader(f"Pdf/{pdfFile}", 'rb'))
             mergedObj.write("yourfile.pdf")
+
+            print(f"Output: {os.path.dirname(__file__)}/yourfile.pdf")
         else:
             print("WARNING: no images downloaded!")
 
+        print("----------------------------END---------------------------")
+
     def CleanUp(self):
-        print("Cleaning up other files")
+        print("-------------------Cleaning up other files---------------")
         # removes temp files
         for file in os.listdir("Pdf"):
             os.remove("Pdf/" + file)
@@ -214,3 +222,5 @@ class ComputerApi:
             os.remove("yourfile.pdf")
         except FileNotFoundError:
             print("File not found: yourfile.pdf")
+
+        print("----------------------------END---------------------------")
