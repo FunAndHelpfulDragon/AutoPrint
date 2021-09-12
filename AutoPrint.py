@@ -182,6 +182,7 @@ class ComputerApi:
         length = len(self.files)
         if length > 0:
             print("Making pdf")
+            # do we need to do this?
             if (length % 2) != 0:
                 self.files = self.files[:-1]  # removes one from the array to make even.  # noqa
 

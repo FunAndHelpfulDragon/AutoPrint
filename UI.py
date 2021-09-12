@@ -5,7 +5,7 @@ import Main as ProgramMa
 
 class pygameUI:
 
-    def __init__(self, colour):
+    def __init__(self, colour, Font, FontSize):
         self.Program = ProgramMa.main()
         pygame.init()
         self.res = (400, 350)
@@ -19,7 +19,7 @@ class pygameUI:
         self.width = self.screen.get_width()
         self.height = self.screen.get_height()
 
-        self.smallfont = pygame.font.SysFont('Corbel', 20)
+        self.smallfont = pygame.font.SysFont(Font, FontSize)
 
     def EventChecks(self, event):
         for ev in event:
@@ -57,9 +57,9 @@ class pygameUI:
                     self.Program.Input(7)
 
             if ev.type == pygame.QUIT:
-                pygame.quit()
-                StartUp()  # make sure that the program can still be used
-                # sys.exit("Program Quit")
+                # pygame.quit()
+                # StartUp()  # make sure that the program can still be used
+                sys.exit("Program Quit")
 
     def DrawButtons(self):
         # Quit Button
@@ -123,7 +123,10 @@ class pygameUI:
 
 
 # TODO: add more settings for ui
-ui = pygameUI([(0, 0, 0), (255, 255, 255), (50, 50, 50)])
+ui = pygameUI(
+    [(0, 0, 0), (255, 255, 255), (50, 50, 50)],
+    'Corbel',
+    20)
 
 
 def StartUp():
@@ -135,7 +138,7 @@ def StartUp():
             Choice = None
         else:
             Choice = int(Choice)
-            if 0 > Choice > 3:  # Choice is not 1 or 2
+            if -1 > Choice > 4:  # Choice is not 1 or 2
                 print("Only 1 or 2 is allowed")
                 Choice = None
 

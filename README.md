@@ -14,17 +14,17 @@ RECOMMENDATION: Do this in a virtual enviroment, https://docs.python.org/3/tutor
     `pip install pillow`
     `pip install PyPDF2`
     `pip install pygame`
-    NOTE: you might need to run `sudo apt-get install python3-sdl2` if the program isn't working. 
+    NOTE: you might need to run `sudo apt-get install python3-sdl2` if the program isn't working.
 
 4. Set up the printer
-   - Make sure CUPS is installed, you can test this by running `lp {Path To Folder}\Test1.png` this should print a transparent page out.
+   - Make sure CUPS is installed, you can test this by running `lp {Path To Folder}\Blank.png` this should print a transparent page out.
    - If CUPS is not installed, install it via http://www.cups.org/
 
    - Recommendations:
    - Make the printer default to 2 sided, This will save paper in the long run.
    - Set the printer quality to a higher level than the normal level, This will make the images look better
    - Set the printer to the default printer for that device. (you don't have to, but it's easier when running the program)
-   
+
 5. Follow these documentations to get the google api to work (Sorry, google api can be annoying sometimes, and it's just easier to do it this way):
    - https://developers.google.com/workspace/guides/create-project
    - https://developers.google.com/workspace/guides/create-credentials

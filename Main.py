@@ -24,7 +24,6 @@ class main:
                     self.Download = ite[0]
                     self.Move = ite[1]
                     self.Print = ite[2]
-                    self.Clean = ite[3]
 
                     # Refrence needed api's
                     self.CApi = Ap.ComputerApi()
@@ -44,11 +43,9 @@ class main:
             Download = input("Google drive folder id for download files (please make sure you have access to this): ")  # noqa
             Move = input("Google drive folder id for files to move to after printing (please make sure you have access to this): ")  # noqa
             printer = input("Printer name (leave blank for none): ")
-            Clean = input("(RECOMMENDED) Clean up files after finished (delete downloaded files and made pdf's) (y = yes, n = no)?: ")  # noqa
             settings.write(f"Download: {Download}\n" +
                            f" Move: {Move}\n" +
-                           f" Printer: {printer}\n" +
-                           f" Clean: {Clean}\n")
+                           f" Printer: {printer}\n")
         print("----------------------------END---------------------------")
 
     def Input(self, choice):
@@ -98,9 +95,8 @@ class main:
     def ActualyPrintFile(self):
         self.CApi.PrintFiles(self.Print, "yourfile.pdf")
         time.sleep(60)  # wait for print
-        if self.Clean.lower().replace(" ", "") == "y":
-            self.CApi.CleanUp()
-            self.GApi.MoveFiles()
+        self.CApi.CleanUp()
+        self.GApi.MoveFiles()
 
     def AutoPrint(self):
         try:
