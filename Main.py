@@ -69,7 +69,7 @@ class main:
             self.PrintFiles()
         elif choice == 6:  # automate
             print("----------------------------TIMER--------------------------")  # noqa
-            Time = input("Please enter a time (FORMAT: (HH:MM:SS), (24h time required)): ")
+            Time = input("Please enter a time (FORMAT: (HH:MM:SS), (24h time required)): ")  # noqa
             self.Autotime = datetime.datetime.strptime(Time, "%H:%M:%S").time()
             self.Activeprint = True
             self.AutoPrint()
