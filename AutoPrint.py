@@ -165,6 +165,7 @@ class ComputerApi:
     def PrintFiles(self, printer, file_to_print):
         print(file_to_print)
         print(printer)
+        print("Printing files")
         if printer != " ":
             os.system(f"lp -d {printer} {file_to_print}")
         else:
@@ -175,6 +176,7 @@ class ComputerApi:
         i = 0
         length = len(self.files)
         if length > 0:
+            print("Making pdf")
             if (length % 2) != 0:
                 self.files = self.files[:-1]  # removes one from the array to make even.  # noqa
 
@@ -202,18 +204,13 @@ class ComputerApi:
             print("WARNING: no images downloaded!")
 
     def CleanUp(self):
+        print("Cleaning up other files")
         # removes temp files
-        try:
-            for file in os.listdir("Pdf"):
-                os.remove("Pdf/" + file)
-        except FileNotFoundError:
-            print("File already deleted for `Pdf/`")
-        try:
-            for file in os.listdir("ToPrint"):
-                os.remove("ToPrint/" + file)
-        except FileNotFoundError:
-            print("File already deleted for `ToPrint/`")
+        for file in os.listdir("Pdf"):
+            os.remove("Pdf/" + file)
+        for file in os.listdir("ToPrint"):
+            os.remove("ToPrint/" + file)
         try:
             os.remove("yourfile.pdf")
         except FileNotFoundError:
-            print("File already deleted `yourfile.pdf`")
+            print("File not found: yourfile.pdf")
