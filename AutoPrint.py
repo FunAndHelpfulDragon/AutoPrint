@@ -174,29 +174,32 @@ class ComputerApi:
         self.GetFiles()
         i = 0
         length = len(self.files)
-        if (length % 2) != 0:
-            self.files = self.files[:-1]  # removes one from the array to make even.  # noqa
+        if length > 0:
+            if (length % 2) != 0:
+                self.files = self.files[:-1]  # removes one from the array to make even.  # noqa
 
-        for image in self.files:
-            i = i + 1
-            img = Image.open(image)
-            img = img.rotate(90, expand=True)
-            img.thumbnail((570, 820), Image.ANTIALIAS)
-            # img.save(img, "JPEG")
+            for image in self.files:
+                i = i + 1
+                img = Image.open(image)
+                img = img.rotate(90, expand=True)
+                img.thumbnail((570, 820), Image.ANTIALIAS)
+                # img.save(img, "JPEG")
 
-            # img = Image.open(image)
-            imgN = Image.new('RGB',
-                             (595, 842),  # a4 size
-                             (255, 255, 255))  # white background
-            imgN.paste(img, (10, 10))
-            imgN.save(f"Pdf/PDFTest{i}", 'PDF', quality=100)
+                # img = Image.open(image)
+                imgN = Image.new('RGB',
+                                 (595, 842),  # a4 size
+                                 (255, 255, 255))  # white background
+                imgN.paste(img, (10, 10))
+                imgN.save(f"Pdf/PDFTest{i}", 'PDF', quality=100)
 
-        # merges the pdf's generted above into 1
-        mergedObj = PdfFileMerger()
-        for pdfFile in os.listdir("Pdf"):
-            if pdfFile != ".DS_Store":
-                mergedObj.append(PdfFileReader(f"Pdf/{pdfFile}", 'rb'))
-        mergedObj.write("yourfile.pdf")
+            # merges the pdf's generted above into 1
+            mergedObj = PdfFileMerger()
+            for pdfFile in os.listdir("Pdf"):
+                if pdfFile != ".DS_Store":
+                    mergedObj.append(PdfFileReader(f"Pdf/{pdfFile}", 'rb'))
+            mergedObj.write("yourfile.pdf")
+        else:
+            print("WARNING: no images downloaded!")
 
     def CleanUp(self):
         # removes temp files
