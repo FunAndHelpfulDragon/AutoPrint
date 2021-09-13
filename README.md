@@ -13,7 +13,7 @@ RECOMMENDATION: Do this in a virtual enviroment, https://docs.python.org/3/tutor
     `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib`
     `pip install pillow`
     `pip install PyPDF2`
-    `pip install pygame`
+    `pip install pygame`  (not needed if running headless mode (without UI))
     NOTE: you might need to run `sudo apt-get install python3-sdl2` if the program isn't working.
 
 4. Set up the printer
@@ -34,7 +34,7 @@ RECOMMENDATION: Do this in a virtual enviroment, https://docs.python.org/3/tutor
 7. Everything is setup, use the Text/UI based interface to print files.
 
 # To run
-run `python UI.py` in the virtual enviroment (if set up) or just normally
+run `python Program.py` in the virtual enviroment (if set up) or just normally.
 when asked for google drive folder id, paste in the id. To get the id, go to that folder and in the URL copy the last string of the folder.
 when asked for the printer, leave it blank to use the default printer (for that device) else put in the printer name.
 when asked to deleted files after use, Recommendation is yes those are just temparay files that have been downloaded, the program doesn't need them any more. (no is an option, but then they will be included in the next pdf.

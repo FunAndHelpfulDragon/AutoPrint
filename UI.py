@@ -122,38 +122,10 @@ class pygameUI:
             self.DrawObjectsToDisplay()
 
 
-# TODO: add more settings for ui
+# TODO: add more settings for ui?
 ui = pygameUI(
     [(0, 0, 0), (255, 255, 255), (50, 50, 50)],
     'Corbel',
     20)
 
-
-def StartUp():
-    Choice = None
-    while Choice is None:
-        Choice = input("Do you want to use text based iterface (1) or UI based interface (with a bit of text based) (2)?: ")  # noqa
-        if not Choice.isdigit():
-            print("A number is required")
-            Choice = None
-        else:
-            Choice = int(Choice)
-            if -1 > Choice > 4:  # Choice is not 1 or 2
-                print("Only 1 or 2 is allowed")
-                Choice = None
-
-    if Choice == 2:
-        ui.Main()
-    elif Choice == 1:
-        pygame.quit()
-        while True:
-            choice = input("What do you want to do? (0 = exit, 1 = change settings, 2 = print, 3 = List (list files in that directory), 4 = Cleanup (clean up files that did not get deleted), 5 = GenFile (makes the file, doesn't print it), 6 = Automate (runs the program at XX:XX:XX time per day, also prints the file), 7 = Move files (on google drive)): ")  # noqa
-            if choice.isdigit():
-                ui.Program.Input(int(choice))
-            else:
-                print("Please enter a number")
-    else:
-        print("WARNING: Invalid choice")
-
-
-StartUp()
+ui.Main()
