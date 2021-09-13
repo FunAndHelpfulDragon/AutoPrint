@@ -67,7 +67,7 @@ class main:
         elif choice == 6:  # automate
             print("----------------------------TIMER--------------------------")  # noqa
             Time = input("Please enter a time (FORMAT: (HH:MM:SS), (24h time required)): ")  # noqa
-            self.Autotime = datetime.datetime.strptime(Time, "%H:%M:%S").time()
+            self.Autotime = datetime.datetime.strptime(Time, "%H:%M:%S")  # .time()  # noqa
             self.Activeprint = True
             self.AutoPrint()
             print("----------------------------END---------------------------")
@@ -101,11 +101,11 @@ class main:
     def AutoPrint(self):
         try:
             while self.Activeprint:  # Stop without using ctrl + c
-                if datetime.datetime.now().time() == self.Autotime:
+                if datetime.datetime.now().time() == self.Autotime.time():  # noqa
                     print("Attempting to print file")
-                    self.Input(5)
+                    self.Input(2)
         except KeyboardInterrupt:
-            print("Press 1 to quit")
+            print("\n Finished")
         return
 
 
