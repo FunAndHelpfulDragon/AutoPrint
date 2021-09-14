@@ -7,6 +7,7 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.http import MediaIoBaseDownload
 from PIL import Image
 from PyPDF2 import PdfFileMerger, PdfFileReader
+import datetime
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -31,6 +32,9 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 #
 # list()
 # - prints out a list for all files in a folder (and their id)
+#
+# MakeFolder()
+# - Makes a sub folder under the folder they want to move to with the time of creation as the name  # noqa
 
 
 class GoogleApi:
@@ -104,16 +108,17 @@ class GoogleApi:
     def MoveFiles(self):
         print("Moving Files")
         self.GetFilesForDownload()  # make sure it has files
+        id = self.MakeFolder()
         for file in self.Files:
             file_Id = file.get('id')
             currentfile = self.service.files().get(fileId=file_Id,
                                                    fields='parents').execute()
             previousParent = ",".join(currentfile.get('parents'))
             self.service.files().update(fileId=file_Id,
-                                        addParents=self.moveFolder_Id,
+                                        addParents=id,
                                         removeParents=previousParent,
                                         fields='id, parents').execute()
-            print(f"Moved file: {file.get('name')} to {self.moveFolder_Id}")
+            print(f"Moved file: {file.get('name')} to {id}")
 
     def List(self):
         print("----------------------Files in Drive----------------------")
@@ -121,6 +126,17 @@ class GoogleApi:
         for file in self.Files:
             print(f"{file.get('name')} ({file.get('id')})")
         print("----------------------------END---------------------------")
+
+    def MakeFolder(self):
+        file_metadata = {
+            'name': f'{datetime.datetime.now()}',
+            'mimeType': 'application/vnd.google-apps.folder',
+            'parents': [self.moveFolder_Id]
+        }
+        file = self.service.files().create(body=file_metadata,
+                                           fields='id').execute()
+        return file.get('id')
+
 
 # ComputerApi class
 #
