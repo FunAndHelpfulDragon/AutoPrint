@@ -119,19 +119,17 @@ class GoogleApi:
                                         removeParents=previousParent,
                                         fields='id, parents').execute()
             print(f"Moved file: {file.get('name')} to {id}")
-    
+
     def MoveFilesBack(self):
         print("Moving files back")
         self.GetFilesForDownload()
         for file in self.files:
             file_Id = file.get('id')
-            currentfile = self.service.files().get(fileId=file_I,
-                                                   fields='parents').execute()
             self.service.files().update(fileId=file_Id,
                                         addParents=self.moveFolder_Id,
                                         removeParents=self.newid,
                                         fields='id, parents').execute()
-            print(f"Moved file: {file.get('name')} back to {self.moveFOlder_Id}")
+            print(f"Moved file: {file.get('name')} back to {self.moveFolder_Id}")  # noqa
 
     def List(self):
         print("----------------------Files in Drive----------------------")

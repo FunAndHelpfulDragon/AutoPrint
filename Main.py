@@ -77,6 +77,8 @@ class main:
             print("----------------------------END---------------------------")
         elif choice == 7:  # move Files
             self.GApi.MoveFiles()
+        elif choice == 8:
+            self.GApi.MoveFilesBack()
         else:
             print("Please enter a valid number")
 
