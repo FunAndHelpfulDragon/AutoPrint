@@ -8,8 +8,8 @@ import webhookTest as web
 
 class main:
 
-    def __init__(self, url):
-        self.web = web.webhook(url)
+    def __init__(self):
+        self.web = web.webhook()
         # check for settings
         try:
             with open("APSettings.txt", 'r') as settings:

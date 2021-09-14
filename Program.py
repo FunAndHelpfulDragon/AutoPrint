@@ -12,7 +12,7 @@ while Choice is None:
         Choice = int(Choice)
         if Choice == 1:
             import Main
-            m = Main.main(input("Discord webhook url:"))
+            m = Main.main()
             while True:
                 choice = input("What do you want to do?\n" +
                                "0 = exit,\n" +
