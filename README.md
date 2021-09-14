@@ -13,7 +13,8 @@ RECOMMENDATION: Do this in a virtual enviroment, https://docs.python.org/3/tutor
     `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib`
     `pip install pillow`
     `pip install PyPDF2`
-    `pip install pygame`  (not needed if running headless mode (without UI))
+    `pip install pygame` (OPTIONAL CHOICE)
+    `pip install discord-webhook` (WIP going to make an optional choice)
     NOTE: you might need to run `sudo apt-get install python3-sdl2` if the program isn't working.
 
 4. Set up the printer

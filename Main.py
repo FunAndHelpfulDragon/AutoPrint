@@ -3,11 +3,13 @@ import sys
 import time
 import datetime
 import os
+import webhookTest as web
 
 
 class main:
 
-    def __init__(self):
+    def __init__(self, url):
+        self.web = web.webhook(url)
         # check for settings
         try:
             with open("APSettings.txt", 'r') as settings:
@@ -83,9 +85,11 @@ class main:
             print("Please enter a valid number")
 
     def PrintFiles(self):
+        self.web.SendMessage("Started")
         if not os.path.exists("yourfile.pdf"):
             self.GApi.DownloadFiles()
             self.CApi.GenerateFile()
+            self.web.SendMessage("Made pdf")
             time.sleep(1)
             if not self.GenFile:
                 self.ActualyPrintFile()
@@ -103,6 +107,7 @@ class main:
         time.sleep(60)  # wait for print
         self.CApi.CleanUp()
         self.GApi.MoveFiles()
+        self.web.SendMessage("Finished Program")
 
     def AutoPrint(self):
         try:
@@ -115,4 +120,4 @@ class main:
         return
 
 
-m = main()
+# m = main()

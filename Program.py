@@ -1,7 +1,10 @@
 # This program communicates with other files, basically the Master program.
 Choice = None
 while Choice is None:
-    Choice = input("Do you want to use text based iterface (Recommended for low end computers) (1) or UI based interface (with a bit of text based) (2)?: ")  # noqa
+    Choice = input("What type of interface do you want to use?\n" +
+                   "Text based (1),\n" +
+                   "UI based (2) (REQUIREDS pygame)\n" +
+                   "3 WIP")  # noqa
     if not Choice.isdigit():
         print("A number is required")
         Choice = None
@@ -9,7 +12,7 @@ while Choice is None:
         Choice = int(Choice)
         if Choice == 1:
             import Main
-            m = Main.main()
+            m = Main.main(input("Discord webhook url:"))
             while True:
                 choice = input("What do you want to do?\n" +
                                "0 = exit,\n" +
