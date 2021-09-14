@@ -39,5 +39,13 @@ when asked for google drive folder id, paste in the id. To get the id, go to tha
 when asked for the printer, leave it blank to use the default printer (for that device) else put in the printer name.
 when asked to deleted files after use, Recommendation is yes those are just temparay files that have been downloaded, the program doesn't need them any more. (no is an option, but then they will be included in the next pdf.
 
+# Crontab
+Crontab is another way of automating running the program and saving processing power. Below is how you setup this program to run in crontab
+1. Make sure to have the crontab.py file
+2. Run `crontab -e`
+3. At tge bottom if the file place the fillieing line, changing values as needed
+`{Input date time} {Path to python (normal /usr/bin/python3)} {Path to program folder}/crontab.py`
+4. save and quit thr file and it is all set up!
+
 # Notes
 - Fell free to edit the repostratry and do a pull request, This Program was made in about a week.
