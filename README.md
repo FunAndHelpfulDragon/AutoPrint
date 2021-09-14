@@ -43,9 +43,10 @@ when asked to deleted files after use, Recommendation is yes those are just temp
 Crontab is another way of automating running the program and saving processing power. Below is how you setup this program to run in crontab
 1. Make sure to have the crontab.py file
 2. Run `crontab -e`
-3. At tge bottom if the file place the fillieing line, changing values as needed
+3. At the bottom if the file place the following line, changing values as needed
 `{Input date time} {Path to python (normal /usr/bin/python3)} {Path to program folder}/crontab.py`
-4. save and quit thr file and it is all set up!
+4. save and quit the file and it is all set up!
+- If the crontab.py file gets updated, crontab will use the updated file without you having to do anything.
 
 # Notes
 - Fell free to edit the repostratry and do a pull request, This Program was made in about a week.
