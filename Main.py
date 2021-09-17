@@ -12,7 +12,7 @@ class main:
         self.web = web.webhook()
         # check for settings
         try:
-            with open("APSettings.txt", 'r') as settings:
+            with open(f"{os.path.dirname(__file__)}/APSettings.txt", 'r') as settings:
 
                 items = settings.read()  # gets items
 
@@ -41,7 +41,7 @@ class main:
 
     def MakeSetting(self):
         print("-------------------------SETTINGS-----------------------")
-        with open("APSettings.txt", 'w') as settings:
+        with open(f"{os.path.dirname(__file__)}/APSettings.txt", 'w') as settings:
             Download = input("Google drive folder id for download files (please make sure you have access to this): ")  # noqa
             Move = input("Google drive folder id for files to move to after printing (please make sure you have access to this): ")  # noqa
             printer = input("Printer name (leave blank for none): ")
@@ -103,8 +103,8 @@ class main:
                 print(f"Location to file: {os.path.dirname(__file__)}/yourfile.pdf")  # noqa
 
     def ActualyPrintFile(self):
-        self.CApi.PrintFiles(self.Print, "yourfile.pdf")
-        time.sleep(60)  # wait for print
+        self.CApi.PrintFiles(self.Print, f"{os.path.dirname(__file__)}/yourfile.pdf")
+        time.sleep(500)  # wait for print
         self.CApi.CleanUp()
         self.GApi.MoveFiles()
         self.web.SendMessage("Finished Program")

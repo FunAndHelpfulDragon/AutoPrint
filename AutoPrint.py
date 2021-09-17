@@ -8,6 +8,7 @@ from googleapiclient.http import MediaIoBaseDownload
 from PIL import Image
 from PyPDF2 import PdfFileMerger, PdfFileReader
 import datetime
+import webhookTest as web
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -47,18 +48,18 @@ class GoogleApi:
 
     def __LoadAPI__(self):
         creds = None
-        if os.path.exists('token.json'):
-            creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+        if os.path.exists(f'{os.path.dirname(__file__)}/token.json'):
+            creds = Credentials.from_authorized_user_file(f'{os.path.dirname(__file__)}/token.json', SCOPES)
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', SCOPES)
+                    f'{os.path.dirname(__file__)}/credentials.json', SCOPES)
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
-            with open('token.json', 'w') as token:
+            with open(f'{os.path.dirname(__file__)}/token.json', 'w') as token:
                 token.write(creds.to_json())
 
         return build('drive', 'v3', credentials=creds)
@@ -107,7 +108,9 @@ class GoogleApi:
 
     def MoveFiles(self):
         print("Moving Files")
-        self.GetFilesForDownload()  # make sure it has files
+        # self.GetFilesForDownload()  # make sure it has files
+        if len(self.files) == 0:
+            self.GetFilesForDownload()
         self.newid = self.MakeFolder()
         for file in self.Files:
             file_Id = file.get('id')
@@ -170,12 +173,12 @@ class GoogleApi:
 class ComputerApi:
 
     def __init__(self):
-        if not os.path.exists("ToPrint"):
-            os.mkdir("ToPrint")
+        if not os.path.exists(f"{os.path.dirname(__file__)}/ToPrint"):
+            os.mkdir(f"{os.path.dirname(__file__)}/ToPrint")
             print("Made directory")
-        self.Path = "ToPrint/"
-        if not os.path.exists("Pdf"):
-            os.mkdir("Pdf")
+        self.Path = f"{os.path.dirname(__file__)}/ToPrint/"
+        if not os.path.exists(f"{os.path.dirname(__file__)}/Pdf"):
+            os.mkdir(f"{os.path.dirname(__file__)}/Pdf")
             print("Made directory")
 
     def DeleteFile(self, file_Path):
@@ -189,8 +192,8 @@ class ComputerApi:
     def GetFiles(self):
         print("Getting files")
         files = []
-        for file in os.listdir("ToPrint"):
-            files.append("ToPrint/" + file)
+        for file in os.listdir(f"{os.path.dirname(__file__)}/ToPrint"):
+            files.append(f"{os.path.dirname(__file__)}/ToPrint/" + file)
         self.files = files
 
     def PrintFiles(self, printer, file_to_print):
@@ -225,16 +228,18 @@ class ComputerApi:
                                  (595, 842),  # a4 size
                                  (255, 255, 255))  # white background
                 imgN.paste(img, (10, 10))
-                imgN.save(f"Pdf/PDFTest{i}", 'PDF', quality=100)
+                imgN.save(f"{os.path.dirname(__file__)}/Pdf/PDFTest{i}", 'PDF', quality=100)
 
             # merges the pdf's generted above into 1
             mergedObj = PdfFileMerger()
-            for pdfFile in os.listdir("Pdf"):
+            for pdfFile in os.listdir(f"{os.path.dirname(__file__)}/Pdf"):
                 if pdfFile != ".DS_Store":
-                    mergedObj.append(PdfFileReader(f"Pdf/{pdfFile}", 'rb'))
-            mergedObj.write("yourfile.pdf")
+                    mergedObj.append(PdfFileReader(f"{os.path.dirname(__file__)}/Pdf/{pdfFile}", 'rb'))
+            mergedObj.write(f"{os.path.dirname(__file__)}/yourfile.pdf")
 
+            web.webhook().SendMessage(f"Output: {os.path.dirname(__file__)}/yourfile.pdf")
             print(f"Output: {os.path.dirname(__file__)}/yourfile.pdf")
+            
         else:
             print("WARNING: no images downloaded!")
 
@@ -243,12 +248,12 @@ class ComputerApi:
     def CleanUp(self):
         print("-------------------Cleaning up other files---------------")
         # removes temp files
-        for file in os.listdir("Pdf"):
-            os.remove("Pdf/" + file)
-        for file in os.listdir("ToPrint"):
-            os.remove("ToPrint/" + file)
+        for file in os.listdir(f"{os.path.dirname(__file__)}/Pdf"):
+            os.remove(f"{os.path.dirname(__file__)}/Pdf/" + file)
+        for file in os.listdir(f"{os.path.dirname(__file__)}/ToPrint"):
+            os.remove(f"{os.path.dirname(__file__)}/ToPrint/" + file)
         try:
-            os.remove("yourfile.pdf")
+            os.remove(f"{os.path.dirname(__file__)}/yourfile.pdf")
         except FileNotFoundError:
             print("File not found: yourfile.pdf")
 
