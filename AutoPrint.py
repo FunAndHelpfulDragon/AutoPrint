@@ -268,6 +268,6 @@ class ComputerApi:
     
     def TestFile(self):
         blankimg = f"{os.path.dirname(__file__)}/Blank.png"
-        for x in range(0,2):
+        for x in range(0,8):
             shutil.copy2(blankimg, os.path.join(f"{os.path.dirname(__file__)}/ToPrint/", f"Blank({x})"))
         
