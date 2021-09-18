@@ -81,6 +81,10 @@ class main:
             self.GApi.MoveFiles()
         elif choice == 8:
             self.GApi.MoveFilesBack()
+        elif choice == 9:
+            self.CApi.TestFile()
+            self.CApi.GenerateFile()
+            self.CApi.PrintFiles(self.Print, f"{os.path.dirname(__file__)}/yourfile.pdf")
         else:
             print("Please enter a valid number")
 

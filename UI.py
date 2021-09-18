@@ -37,7 +37,7 @@ class pygameUI:
                     self.Program.Input(4)
 
                 # Settings
-                if 0 <= self.mouse[0] <= 120 and 105 <= self.mouse[1] <= 140:
+                if 0 <= self.mouse[0] <= 120 and 105 <= self.mouse[1] <= 135:
                     self.Program.Input(1)
 
                 # Test File
@@ -45,16 +45,24 @@ class pygameUI:
                     self.Program.Input(5)
 
                 # Print File
-                if 0 <= self.mouse[0] <= 120 and 175 <= self.mouse[1] <= 210:
+                if 0 <= self.mouse[0] <= 120 and 175 <= self.mouse[1] <= 205:
                     self.Program.Input(2)
 
                 # Timer
-                if 0 <= self.mouse[0] <= 120 and 215 <= self.mouse[1] <= 250:
+                if 0 <= self.mouse[0] <= 120 and 210 <= self.mouse[1] <= 240:
                     self.Program.Input(6)
 
                 # Move Files
-                if 0 <= self.mouse[0] <= 120 and 240 <= self.mouse[1] <= 275:
+                if 0 <= self.mouse[0] <= 120 and 245 <= self.mouse[1] <= 275:
                     self.Program.Input(7)
+                
+                # Move Files Back
+                if 0 <= self.mouse[0] <= 120 and 280 <= self.mouse[1] <= 310:
+                    self.Program.Input(8)
+                
+                # Test File
+                if 0 <= self.mouse[0] <= 120 and 315 <= self.mouse[1] <= 345:
+                    self.Program.Input(9)
 
             if ev.type == pygame.QUIT:
                 # pygame.quit()
@@ -105,6 +113,20 @@ class pygameUI:
         self.screen.blit(self.smallfont.render('Moves Files', True, self.colourLight), (20, 250))  # noqa
         self.screen.blit(self.smallfont.render('Moves files on google drive', True, self.colourLight), (120, 250))  # noqa
         self.screen.blit(self.smallfont.render('(shold be automatic)', True, self.colourLight), (120, 260))  # noqa
+        
+        # Move Files Back
+        pygame.draw.rect(self.screen, (0, 0, 0), [0, 280, 120, 30])
+        self.screen.blit(self.smallfont.render('Moves Files Back', True, self.colourLight), (20, 285))  # noqa
+        self.screen.blit(self.smallfont.render('Moves files on google drive', True, self.colourLight), (120, 285))  # noqa
+        self.screen.blit(self.smallfont.render('ONLY WORKS WITH RECENT FILES MOVED (and in memory)', True, self.colourLight), (120, 295))  # noqa
+        
+        # Test file
+        pygame.draw.rect(self.screen, (0, 0, 0), [0, 315, 120, 30])
+        self.screen.blit(self.smallfont.render('Test File', True, self.colourLight), (20, 320))  # noqa
+        self.screen.blit(self.smallfont.render('Prints an 8 page blank pdf', True, self.colourLight), (120, 320))  # noqa
+        # self.screen.blit(self.smallfont.render('(shold be automatic)', True, self.colourLight), (120, 330))  # noqa
+
+
 
     def DrawObjectsToDisplay(self):
         pygame.display.update()

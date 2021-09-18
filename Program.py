@@ -4,7 +4,7 @@ while Choice is None:
     Choice = input("What type of interface do you want to use?\n" +
                    "Text based (1),\n" +
                    "UI based (2) (REQUIREDS pygame)\n" +
-                   "3 WIP")  # noqa
+                   "3 WIP: ")  # noqa
     if not Choice.isdigit():
         print("A number is required")
         Choice = None
@@ -23,8 +23,9 @@ while Choice is None:
                                "5 = GenFile (makes the file, doesn't print it),\n" +  # noqa
                                "6 = Automate (runs the program at XX:XX:XX time per day, also prints the file),\n" +  # noqa
                                "7 = Move files (on google drive)),\n" +
-                               "8 = Move files back (on google drive)"
-                               "option:")  # noqa
+                               "8 = Move files back (on google drive)\n" +
+                               "9 = Test File (makes a 8 page pdf and prints it)\n" +
+                               "option: ")  # noqa
                 if choice.isdigit():
                     m.Input(int(choice))
                 else:

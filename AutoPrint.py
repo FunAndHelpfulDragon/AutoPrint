@@ -5,10 +5,12 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.http import MediaIoBaseDownload
+from google.auth.exceptions import RefreshError
 from PIL import Image
 from PyPDF2 import PdfFileMerger, PdfFileReader
 import datetime
 import webhookTest as web
+import shutil
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -47,22 +49,27 @@ class GoogleApi:
         self.Path = path
 
     def __LoadAPI__(self):
-        creds = None
-        if os.path.exists(f'{os.path.dirname(__file__)}/token.json'):
-            creds = Credentials.from_authorized_user_file(f'{os.path.dirname(__file__)}/token.json', SCOPES)
-        # If there are no (valid) credentials available, let the user log in.
-        if not creds or not creds.valid:
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    f'{os.path.dirname(__file__)}/credentials.json', SCOPES)
-                creds = flow.run_local_server(port=0)
-            # Save the credentials for the next run
-            with open(f'{os.path.dirname(__file__)}/token.json', 'w') as token:
-                token.write(creds.to_json())
+        try:
+            creds = None
+            if os.path.exists(f'{os.path.dirname(__file__)}/token.json'):
+                creds = Credentials.from_authorized_user_file(f'{os.path.dirname(__file__)}/token.json', SCOPES)
+            # If there are no (valid) credentials available, let the user log in.
+            if not creds or not creds.valid:
+                if creds and creds.expired and creds.refresh_token:
+                    creds.refresh(Request())
+                else:
+                    flow = InstalledAppFlow.from_client_secrets_file(
+                        f'{os.path.dirname(__file__)}/credentials.json', SCOPES)
+                    creds = flow.run_local_server(port=0)
+                # Save the credentials for the next run
+                with open(f'{os.path.dirname(__file__)}/token.json', 'w') as token:
+                    token.write(creds.to_json())
 
-        return build('drive', 'v3', credentials=creds)
+            return build('drive', 'v3', credentials=creds)
+        except RefreshError:
+            os.remove(f"{os.path.dirname(__file__)}/token.json")
+            web.webhook().SendMessage("<@!467718535897022479> Google api authentication required")
+            self.__LoadAPI__()
 
     def GetFilesForDownload(self):
         self.Files = []
@@ -109,7 +116,7 @@ class GoogleApi:
     def MoveFiles(self):
         print("Moving Files")
         # self.GetFilesForDownload()  # make sure it has files
-        if len(self.files) == 0:
+        if len(self.Files) == 0:
             self.GetFilesForDownload()
         self.newid = self.MakeFolder()
         for file in self.Files:
@@ -258,3 +265,9 @@ class ComputerApi:
             print("File not found: yourfile.pdf")
 
         print("----------------------------END---------------------------")
+    
+    def TestFile(self):
+        blankimg = f"{os.path.dirname(__file__)}/Blank.png"
+        for x in range(0,2):
+            shutil.copy2(blankimg, os.path.join(f"{os.path.dirname(__file__)}/ToPrint/", f"Blank({x})"))
+        
