@@ -21,10 +21,9 @@ while Choice is None:
                                "3 = List (list files in that directory),\n" +
                                "4 = Cleanup (clean up files that did not get deleted),\n" +  # noqa
                                "5 = GenFile (makes the file, doesn't print it),\n" +  # noqa
-                               "6 = Automate (runs the program at XX:XX:XX time per day, also prints the file),\n" +  # noqa
-                               "7 = Move files (on google drive)),\n" +
-                               "8 = Move files back (on google drive)\n" +
-                               "9 = Test File (makes a 8 page pdf and prints it)\n" +
+                               "6 = Move files (on google drive)),\n" +
+                               "7 = Move files back (on google drive)\n" +
+                               "8 = Test File (makes a 8 page pdf and prints it)\n" +
                                "option: ")  # noqa
                 if choice.isdigit():
                     m.Input(int(choice))

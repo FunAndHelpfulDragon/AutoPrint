@@ -182,11 +182,14 @@ class ComputerApi:
     def __init__(self):
         if not os.path.exists(f"{os.path.dirname(__file__)}/ToPrint"):
             os.mkdir(f"{os.path.dirname(__file__)}/ToPrint")
-            print("Made directory")
+            print("Made ToPrint directory")
         self.Path = f"{os.path.dirname(__file__)}/ToPrint/"
         if not os.path.exists(f"{os.path.dirname(__file__)}/Pdf"):
             os.mkdir(f"{os.path.dirname(__file__)}/Pdf")
-            print("Made directory")
+            print("Made Pdf directory")
+        if not os.path.exists(f"{os.path.dirname(__file__)}/tmp"):
+            os.mkdir(f"{os.path.dirname(__file__)}/tmp")
+            print("Made tmp directory")
 
     def DeleteFile(self, file_Path):
         os.remove(file_Path)
@@ -224,18 +227,36 @@ class ComputerApi:
                 self.files = self.files[:-1]  # removes one from the array to make even.  # noqa
 
             for image in self.files:
-                i = i + 1
-                img = Image.open(image)
-                img = img.rotate(90, expand=True)
-                img.thumbnail((570, 820), Image.ANTIALIAS)
-                # img.save(img, "JPEG")
+                if image != f"{os.path.dirname(__file__)}/ToPrint/.DS_Store":
+                    # imageHeight = 2560
+                    # Resolution in DPI, assumes input image is 2560 on long size.
+                    # resolution = imageHeight / (29.7 * 0.397008)
+                    # imageWidth = int(resolution * (21.0 * 0.397008))
+                    # resolution = int(resolution)
 
-                # img = Image.open(image)
-                imgN = Image.new('RGB',
-                                 (595, 842),  # a4 size
-                                 (255, 255, 255))  # white background
-                imgN.paste(img, (10, 10))
-                imgN.save(f"{os.path.dirname(__file__)}/Pdf/PDFTest{i}", 'PDF', quality=100)
+                    imageHeight = 842
+                    imageWidth = 595
+
+                    i = i + 1
+                    img = Image.open(image)
+                    img = img.convert('RGB')
+                    img = img.rotate(90, expand=True)
+                    print(imageWidth)
+                    print(imageHeight)
+                    img.thumbnail((imageWidth - 20, imageHeight - 20), Image.ANTIALIAS)
+                    img.save(f"{os.path.dirname(__file__)}/tmp/img{i}.png")
+
+                    import img2pdf
+                    a4inpt = (img2pdf.mm_to_pt(210), img2pdf.mm_to_pt(297))
+                    layout_fun = img2pdf.get_layout_fun(a4inpt)
+                    with open(f"{os.path.dirname(__file__)}/Pdf/PDFTest{i}.pdf", "wb") as f:
+                    	f.write(img2pdf.convert(f"{os.path.dirname(__file__)}/tmp/img{i}.png", layout_fun=layout_fun))
+
+                    # imgN = Image.new('RGB',
+                    #                  (imageWidth, imageHeight),  # a4 size
+                    #                  (255, 255, 255))  # white background
+                    # imgN.paste(img, img.getbbox())#(10, 10))
+                    # imgN.save(f"{os.path.dirname(__file__)}/Pdf/PDFTest{i}.pdf", quality=50)
 
             # merges the pdf's generted above into 1
             mergedObj = PdfFileMerger()
@@ -246,7 +267,7 @@ class ComputerApi:
 
             web.webhook().SendMessage(f"Output: {os.path.dirname(__file__)}/yourfile.pdf")
             print(f"Output: {os.path.dirname(__file__)}/yourfile.pdf")
-            
+
         else:
             print("WARNING: no images downloaded!")
 
@@ -257,17 +278,19 @@ class ComputerApi:
         # removes temp files
         for file in os.listdir(f"{os.path.dirname(__file__)}/Pdf"):
             os.remove(f"{os.path.dirname(__file__)}/Pdf/" + file)
-        for file in os.listdir(f"{os.path.dirname(__file__)}/ToPrint"):
-            os.remove(f"{os.path.dirname(__file__)}/ToPrint/" + file)
+        for file in os.listdir(f"{os.path.dirname(__file__)}/tmp"):
+            os.remove(f"{os.path.dirname(__file__)}/tmp/" + file)
+        if input("Remove downloaded files? (y = yes): ").lower() == "y":
+            for file in os.listdir(f"{os.path.dirname(__file__)}/ToPrint"):
+                os.remove(f"{os.path.dirname(__file__)}/ToPrint/" + file)
         try:
             os.remove(f"{os.path.dirname(__file__)}/yourfile.pdf")
         except FileNotFoundError:
             print("File not found: yourfile.pdf")
 
         print("----------------------------END---------------------------")
-    
+
     def TestFile(self):
         blankimg = f"{os.path.dirname(__file__)}/Blank.png"
-        for x in range(0,8):
+        for x in range(0, 8):
             shutil.copy2(blankimg, os.path.join(f"{os.path.dirname(__file__)}/ToPrint/", f"Blank({x})"))
-        

@@ -66,22 +66,11 @@ class main:
         elif choice == 5:  # download no print
             self.GenFile = True
             self.PrintFiles()
-        elif choice == 6:  # automate
-            print("----------------------------TIMER--------------------------")  # noqa
-            Continue = input("WARNING: THIS TAKES UP A LOT OF CPU POWER, ARE YOU SURE YOU WANT TO CONTINUE? (y = yes, n = no): ")  # noqa
-            if Continue.lower() == "y":
-                Continue2 = input("you can use crontab for less CPU usage (read the readme to learn how to do that), are you sure you want to continue? (y = yes, n = no): ")  # noqa
-                if Continue2.lower() == "y":
-                    Time = input("Please enter a time (FORMAT: (HH:MM:SS), (24h time required)): ")  # noqa
-                    self.Autotime = datetime.datetime.strptime(Time, "%H:%M:%S")  # .time()  # noqa
-                    self.Activeprint = True
-                    self.AutoPrint()
-            print("----------------------------END---------------------------")
-        elif choice == 7:  # move Files
+        elif choice == 6:  # move Files
             self.GApi.MoveFiles()
-        elif choice == 8:
+        elif choice == 7:
             self.GApi.MoveFilesBack()
-        elif choice == 9:
+        elif choice == 8:
             self.CApi.TestFile()
             self.CApi.GenerateFile()
             self.CApi.PrintFiles(self.Print, f"{os.path.dirname(__file__)}/yourfile.pdf")
@@ -113,15 +102,6 @@ class main:
         self.GApi.MoveFiles()
         self.web.SendMessage("Finished Program")
 
-    def AutoPrint(self):
-        try:
-            while self.Activeprint:  # Stop without using ctrl + c
-                if datetime.datetime.now().time() == self.Autotime.time():  # noqa
-                    print("Attempting to print file")
-                    self.Input(2)
-        except KeyboardInterrupt:
-            print("\n Finished")
-        return
 
 
 # m = main()
