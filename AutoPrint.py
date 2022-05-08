@@ -69,7 +69,7 @@ class GoogleApi:
         except RefreshError:
             os.remove(f"{os.path.dirname(__file__)}/token.json")
             web.webhook().SendMessage("<@!467718535897022479> Google api authentication required")
-            self.__LoadAPI__()
+            return self.__LoadAPI__()
 
     def GetFilesForDownload(self):
         self.Files = []
